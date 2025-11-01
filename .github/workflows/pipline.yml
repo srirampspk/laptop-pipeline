@@ -37,8 +37,9 @@ jobs:
       - name: Push changes to qatest branch
         run: |
           # Set git identity for the workflow commits
-          git config --global user.name "sriram"
-          git config --global user.email "kondaveetimohan2003@gmail.com"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
 
           # Create or switch to 'qatest' branch
           git checkout -B qatest  
