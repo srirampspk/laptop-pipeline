@@ -16,7 +16,7 @@ jobs:
           # Keeps workflow credentials so it can push changes safely.
           # This prevents anyone from pushing directly to the branch without going through the workflow.
           persist-credentials: true  
-
+          token: ${{ secrets.GITHUB_TOKEN }}
       # Step 2: Set up Python environment
       - name: Set up Python 3.10
         uses: actions/setup-python@v3
