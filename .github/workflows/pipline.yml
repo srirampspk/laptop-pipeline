@@ -2,7 +2,7 @@ name: Laptop Price Prediction CI
 
 on:
   push:
-    branches: [ "main" ]  # Trigger workflow only on pushes to main branch
+    branches: [ "main" ]  # Trigger workflow only on push to main
 
 jobs:
   ci-and-deploy-to-qatest:
@@ -13,10 +13,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          # Keeps workflow credentials so it can push changes safely.
+          # This prevents anyone from pushing directly to the branch without going through the workflow.
           persist-credentials: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      # Step 2: Set up Python environment
+      # Step 2: Set up Python
       - name: Set up Python 3.10
         uses: actions/setup-python@v3
         with:
@@ -32,19 +34,13 @@ jobs:
       - name: Run tests
         run: pytest
 
-      # Step 4.5: Create a dummy change to ensure push works
-      - name: Make a dummy change
-        run: |
-          echo "Trigger CI for qatest branch" >> trigger.txt
-          git add trigger.txt
-          git commit -m "Add trigger file for qatest branch" || echo "No changes to commit"
-
-      # Step 5: Push to qatest branch
+      # Step 5: Push changes to qatest branch (only runs if tests pass)
       - name: Push changes to qatest branch
+        if: success()  # This ensures the step runs only if previous steps succeed
         env:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Set git identity for the workflow commits
+          # Set git identity for workflow commits
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
