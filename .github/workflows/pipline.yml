@@ -49,3 +49,9 @@ jobs:
 
           # Push using token authentication to avoid 403
           git push https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git qatest --force
+
+          #qatest --force and checkout -b only the qatest brach we can access
+
+          # and more over the github token genrate had some steps like 
+          #-> repo settings -> workflow permissions -> enable read and write permissions ->chosse allow github approval to pull_request
+           
